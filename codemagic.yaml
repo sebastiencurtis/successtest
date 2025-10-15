@@ -17,7 +17,7 @@ workflows:
       xcode: 15.2
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
-        script: xcode-project use-profiles --project "$CM_BUILD_DIR/chickenology.xcodeproj"
+        script: xcode-project use-profiles
 
       - name: Increment build number
         script: |
