@@ -1,51 +1,48 @@
 workflows:
   ios-native-workflow:
     name: iOS Native
-    max_build_duration: 120
     instance_type: mac_mini_m1
+    max_build_duration: 120
     integrations:
       app_store_connect: API Key
     environment:
+      xcode: 15.2
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.chickenology
       vars:
-        BUNDLE_ID: "com.chickenology"
-        XCODE_PROJECT: "chickenology.xcodeproj" # <-- Put the name of your Xcode workspace here
-        XCODE_SCHEME: "chickenology" # <-- Put the name of your Xcode scheme here
+        XCODE_PROJECT: "chickenology.xcodeproj"
+        XCODE_SCHEME: "chickenology"
         APP_STORE_APPLE_ID: 6753979263
-      xcode: 15.2
-    scripts:
-      - name: Set up provisioning profiles settings on Xcode project
-        script: xcode-project use-profiles
 
+    scripts:
       - name: Increment build number
         script: |
           cd $CM_BUILD_DIR
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
           agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
-            --project "$CM_BUILD_DIR/chickenology.xcodeproj" \
-            --scheme "chickenology"
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-path build/ios/archives/chickenology.xcarchive
+
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
     publishing:
       email:
         recipients:
           - thief4015@firemail.at
         notify:
           success: true
-          failure: false
+          failure: true
       app_store_connect:
         auth: integration
-        # Configuration related to TestFlight (optional)
-        # Note: This action is performed during post-processing.
         submit_to_testflight: false
-        # Configuration related to App Store (optional)
-        # Note: This action is performed during post-processing.
         submit_to_app_store: false
