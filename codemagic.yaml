@@ -17,7 +17,7 @@ workflows:
       xcode: 15.2
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
-        script: xcode-project use-profiles --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE"
+        script: xcode-project use-profiles
 
       - name: Increment build number
         script: |
