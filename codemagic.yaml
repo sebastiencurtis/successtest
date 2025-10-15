@@ -36,7 +36,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - sebastiencurtis290600@gmail.com
+          - thief4015@firemail.at
         notify:
           success: true
           failure: false
