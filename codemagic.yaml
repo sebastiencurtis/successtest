@@ -11,13 +11,13 @@ workflows:
         bundle_identifier: com.chickenology
       vars:
         BUNDLE_ID: "com.chickenology"
-        XCODE_WORKSPACE: "chickenology.xcworkspace" # <-- Put the name of your Xcode workspace here
+        XCODE_PROJECT: "chickenology.xcodeproj" # <-- Put the name of your Xcode workspace here
         XCODE_SCHEME: "chickenology" # <-- Put the name of your Xcode scheme here
         APP_STORE_APPLE_ID: 6753979263
       xcode: 15.2
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
-        script: xcode-project use-profiles
+        script: xcode-project use-profiles || echo "use-profiles skipped (non-fatal)"
       - name: Increment build number
         script: |
           cd $CM_BUILD_DIR
@@ -26,8 +26,9 @@ workflows:
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
-            --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --export-method app-store
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
