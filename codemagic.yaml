@@ -14,10 +14,10 @@ workflows:
         XCODE_PROJECT: "chickenology.xcodeproj" # <-- Put the name of your Xcode workspace here
         XCODE_SCHEME: "chickenology" # <-- Put the name of your Xcode scheme here
         APP_STORE_APPLE_ID: 6753979263
-      xcode: 15.2
+      xcode: 16.4
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
-        script: xcode-project use-profiles || echo "use-profiles skipped (non-fatal)"
+        script: xcode-project use-profiles
       - name: Increment build number
         script: |
           cd $CM_BUILD_DIR
@@ -34,12 +34,6 @@ workflows:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
-      email:
-        recipients:
-          - sebastiencurtis290600@gmail.com
-        notify:
-          success: true
-          failure: false
       app_store_connect:
         auth: integration
         # Configuration related to TestFlight (optional)
