@@ -16,18 +16,20 @@ workflows:
         APP_STORE_APPLE_ID: 6753979263
 
     scripts:
-      - name: Increment build number
-        script: |
-          cd $CM_BUILD_DIR
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+  - name: Set up provisioning profiles settings on Xcode project
+    script: xcode-project use-profiles
 
-      - name: Build ipa for distribution
-        script: |
-          xcode-project build-ipa \
-            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --archive-path build/ios/archives/chickenology.xcarchive
+  - name: Increment build number
+    script: |
+      cd $CM_BUILD_DIR
+      LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+      agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+
+  - name: Build ipa for distribution
+    script: |
+      xcode-project build-ipa \
+        --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+        --scheme "$XCODE_SCHEME"
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -46,3 +48,6 @@ workflows:
         auth: integration
         submit_to_testflight: false
         submit_to_app_store: false
+
+
+        
