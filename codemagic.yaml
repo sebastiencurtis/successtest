@@ -26,7 +26,7 @@ workflows:
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
-            --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME"
             --export-options-method app-store
     artifacts:
