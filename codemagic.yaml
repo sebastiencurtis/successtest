@@ -4,16 +4,16 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m1
     integrations:
-      app_store_connect: Codemagic API Key
+      app_store_connect: API Key
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.ChickStrike
+        bundle_identifier: com.chickenology
       vars:
-        BUNDLE_ID: "com.ChickStrike"
-        XCODE_WORKSPACE: "chickStrike.xcworkspace" # <-- Put the name of your Xcode workspace here
-        XCODE_SCHEME: "chickStrike" # <-- Put the name of your Xcode scheme here
-        APP_STORE_APPLE_ID: 6673916534
+        BUNDLE_ID: "com.chickenology"
+        XCODE_WORKSPACE: "chickenology.xcworkspace" # <-- Put the name of your Xcode workspace here
+        XCODE_SCHEME: "chickenology" # <-- Put the name of your Xcode scheme here
+        APP_STORE_APPLE_ID: 6753979263
       xcode: 15.2
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
